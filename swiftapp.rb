@@ -6,9 +6,11 @@ class SwiftApp < Sinatra::Base
   helpers Sinatra::JSON
 
   get '/' do
-    file = File.read('./songs.json')
+    file = File.read('./songs.json', encoding: 'utf-8')
     json_file = JSON.parse(file)
-    json json_file
+
+    content_type 'application/json', :charset => 'utf-8'
+    json_file.to_json
   end
 
 end

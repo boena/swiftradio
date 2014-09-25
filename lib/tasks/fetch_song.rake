@@ -4,7 +4,7 @@ require 'json'
 task :fetch_song do
   p 'Running fetch song job...'
 
-  response = Net::HTTP.get_response(URI.parse('http://api.sr.se/api/v2/playlists/rightnow/?channelid=1607&format=json'))
+  response = Net::HTTP.get_response(URI.parse('http://api.sr.se/api/v2/playlists/rightnow/?channelid=2576&format=json'))
   body = response.body
   data = JSON.parse body
 
@@ -16,7 +16,7 @@ task :fetch_song do
   file = nil
 
   begin
-    file = File.read('./songs.json')
+    file = File.read('./songs.json', encoding: 'utf-8')
   rescue Errno::ENOENT
     file = "{\"songs\": []}"
   end
@@ -36,7 +36,7 @@ task :fetch_song do
   else # First song
     json["songs"] << current_song
 
-    File.open("./songs.json","w") do |f|
+    File.open("./songs.json","w", encoding: 'utf-8') do |f|
       f.write(json.to_json)
     end
   end
