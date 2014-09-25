@@ -13,7 +13,14 @@ task :fetch_song do
     "artist" => data["playlist"]["song"]["artist"]
   }
 
-  file = File.read('./songs.json')
+  file = nil
+
+  begin
+    file = File.read('./songs.json')
+  rescue Errno::ENOENT
+    file = "{\"songs\": []}"
+  end
+
   json = JSON.parse(file)
 
   if json["songs"].length > 0
